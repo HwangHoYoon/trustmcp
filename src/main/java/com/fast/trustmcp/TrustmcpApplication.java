@@ -11,12 +11,7 @@ import java.util.List;
 
 @SpringBootApplication
 public class TrustmcpApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(TrustmcpApplication.class, args);
-    }
-    @Bean
-    public List<ToolCallback> danTools(ScanTools scanTools) {
-        return List.of(ToolCallbacks.from(scanTools));
     }
 }
