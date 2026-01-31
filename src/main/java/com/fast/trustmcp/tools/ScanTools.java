@@ -31,7 +31,7 @@ public class ScanTools {
         }
 
         return webClient.get()
-                .uri("/api/scan/streamAll?url={url}", url)
+                .uri("/api/scan/mcpAll?url={url}", url)
                 .retrieve()
                 .bodyToMono(List.class) // JSON 리스트 그대로 받음
                 .onErrorResume(e -> {
