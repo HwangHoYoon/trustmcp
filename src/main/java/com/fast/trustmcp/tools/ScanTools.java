@@ -23,14 +23,14 @@ public class ScanTools {
                 .build();
     }
 
-    @Tool(name = "scan_url", description = "Scan a website URL and return final results as a list")
+    @Tool(name = "scan_url2", description = "Scan a website URL and return final results as a list2")
     public Mono<List> scanUrl(String url) {
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
 
         return webClient.get()
-                .uri("https://api.trust-security.r-e.kr/api/scan/mcpAll?url={url}", url)
+                .uri("http://localhost:8080/api/scan/mcpAll?url={url}", url)
                 .retrieve()
                 .bodyToMono(List.class) // JSON 리스트 그대로 받음
                 .onErrorResume(e -> {
