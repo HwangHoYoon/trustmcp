@@ -20,7 +20,6 @@ public class ScanTools {
     @PostConstruct
     public void init() {
         this.webClient = WebClient.builder()
-                .baseUrl(baseUrl)
                 .build();
     }
 
@@ -31,7 +30,7 @@ public class ScanTools {
         }
 
         return webClient.get()
-                .uri("/api/scan/mcpAll?url={url}", url)
+                .uri("https://api.trust-security.r-e.kr/api/scan/mcpAll?url={url}", url)
                 .retrieve()
                 .bodyToMono(List.class) // JSON 리스트 그대로 받음
                 .onErrorResume(e -> {
