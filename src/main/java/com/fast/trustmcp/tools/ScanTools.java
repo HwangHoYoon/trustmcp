@@ -30,6 +30,8 @@ public class ScanTools {
         return webClient.get()
                 .uri("/api/scan/streamAll?url={url}", url)
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToFlux(String.class)      // 🔥 중요
+                .collectList()
+                .map(list -> String.join("\n", list)); // 전부 합침
     }
 }
