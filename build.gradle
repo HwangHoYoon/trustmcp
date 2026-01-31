@@ -24,11 +24,18 @@ ext {
 }
 
 dependencies {
+    // WebFlux 기반
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webflux'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Spring AI
+    implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webflux'
+    implementation 'org.springframework.ai:spring-ai-jsoup-document-reader'
+
 }
 
 dependencyManagement {

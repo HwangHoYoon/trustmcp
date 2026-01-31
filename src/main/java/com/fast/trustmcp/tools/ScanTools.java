@@ -1,6 +1,7 @@
 package com.fast.trustmcp.tools;
 
 import org.springaicommunity.mcp.annotation.McpTool;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,10 +20,7 @@ public class ScanTools {
                 .build();
     }
 
-    @McpTool(
-            name = "scan_url",
-            description = "Scan a website URL for security vulnerabilities"
-    )
+    @Tool(name = "scan_url", description = "Scan a website URL for security vulnerabilities")
     public Mono<String> scanUrl(String url) {
 
         if (!url.startsWith("http")) {
