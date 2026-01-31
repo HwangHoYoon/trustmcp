@@ -25,16 +25,16 @@ public class ScanTools {
                 .build();
     }
 
-    @Tool(
-            name = "scan_url",
-            description = "Scan a website URL and return final results as a list"
-    )
-    public String scanUrl(String url) {
+    @Tool(name = "scan_url")
+    public Mono<String> scanUrl(String url) {
 
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
 
-        return "성공입니다.";
+        return webClient.get()
+                .uri("http://localhost:8080/api/scan/mcpAll?url={url}", url)
+                .retrieve()
+                .bodyToMono(String.class); // 🔥 가장 중요
     }
 }
