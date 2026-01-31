@@ -3,11 +3,13 @@ package com.fast.trustmcp.tools;
 import jakarta.annotation.PostConstruct;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class ScanTools {
@@ -23,8 +25,12 @@ public class ScanTools {
                 .build();
     }
 
-    @Tool(name = "scan_url2", description = "Scan a website URL and return final results as a list2")
-    public Mono<List> scanUrl(String url) {
+    @Tool(
+            name = "scan_url",
+            description = "Scan a website URL and return final results as a list"
+    )
+    public Mono<List<Map<String, Object>>> scanUrl(String url) {
+
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
@@ -32,9 +38,8 @@ public class ScanTools {
         return webClient.get()
                 .uri("http://localhost:8080/api/scan/mcpAll?url={url}", url)
                 .retrieve()
-                .bodyToMono(List.class) // JSON 리스트 그대로 받음
+                .bodyToMono(new ParameterizedTypeReference<List<Map<String, Object>>>() {})
                 .onErrorResume(e -> {
-                    // 오류 발생 시 빈 리스트 반환
                     e.printStackTrace();
                     return Mono.just(List.of());
                 });
