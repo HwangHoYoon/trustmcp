@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Component
 public class ScanTools {
 
@@ -22,16 +24,20 @@ public class ScanTools {
                 .build();
     }
 
-    @Tool(name = "scan_url", description = "Scan a website URL for security vulnerabilities")
-    public Mono<String> scanUrl(String url) {
+    @Tool(name = "scan_url", description = "Scan a website URL and return final results as a list")
+    public Mono<List> scanUrl(String url) {
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
+
         return webClient.get()
                 .uri("/api/scan/streamAll?url={url}", url)
                 .retrieve()
-                .bodyToFlux(String.class)      // 🔥 중요
-                .collectList()
-                .map(list -> String.join("\n", list)); // 전부 합침
+                .bodyToMono(List.class) // JSON 리스트 그대로 받음
+                .onErrorResume(e -> {
+                    // 오류 발생 시 빈 리스트 반환
+                    e.printStackTrace();
+                    return Mono.just(List.of());
+                });
     }
 }
